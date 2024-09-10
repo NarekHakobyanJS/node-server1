@@ -3,6 +3,14 @@ const fs = require('fs');
 const path = require('path');
 const users = require('./data/users.json')
 
+
+// fetch('http://localhost:3003/api/users', {
+//     method : "POST",
+//     headers : {
+//         "Content-Type" : "application/json"
+//     },
+//     body : JSON.stringify({id : 1, name : "Varud"})
+// })
 const server = http.createServer((req, res) => {
     if (req.url === '/' && req.method === "GET") {
         fs.promises.readFile(path.join(__dirname, 'data', 'index.html'), 'utf-8')
@@ -33,7 +41,7 @@ const server = http.createServer((req, res) => {
     else if (req.url.match(/\/api\/users\/([0-9]+)/) && req.method === "GET") {
         const id = req.url.split('/')[3]
         const user = users.find((d) => d.id === id);
-        
+
         res.writeHead(200, { statusMessage: "user db", "Content-Type": "application/json" })
         res.write(JSON.stringify(user))
         res.end()
@@ -82,6 +90,15 @@ const server = http.createServer((req, res) => {
         //         res.end()
         //     })
 
+    }
+    else if (req.method === "POST") {
+        let body = [];
+        req.on('data', chunk => body.push(chunk));
+        
+        req.on('end', () => {
+            body = JSON.parse(body[0].toString());
+            console.log(body); // the actual data
+        })
     }
     else {
         res.end()
