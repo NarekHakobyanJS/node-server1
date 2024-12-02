@@ -11,6 +11,8 @@ const users = require('./data/users.json')
 //     },
 //     body : JSON.stringify({id : 1, name : "Varud"})
 // })
+
+
 const server = http.createServer((req, res) => {
     if (req.url === '/' && req.method === "GET") {
         fs.promises.readFile(path.join(__dirname, 'data', 'index.html'), 'utf-8')
@@ -63,6 +65,9 @@ const server = http.createServer((req, res) => {
         // res.end()
 
     }
+
+
+    
     else if (req.url.includes("?") && req.method === "GET") {
         let searchGetParamsIndex = req.url.indexOf('?');
         let getParams = req.url.slice(searchGetParamsIndex + 1)
